@@ -34,15 +34,57 @@ It gathers configuration, user access, change-management and log evidence in one
 - Each step is isolated: one failure never stops the rest. Missing modules or tools are marked *not applicable*.
 - Detects the Odoo source location, configuration file, database, log folders and version-specific field names.
 
-## Usage
+## Quick start
 
-Run from the **Odoo.sh shell** (or SSH) of the branch under review, normally **Production**. This needs admin access to the Odoo.sh project, so it should be run by the client or their partner, with the auditor observing.
+Open **Odoo.sh → your project → Branches → Production → Shell** and paste one of the commands below. This needs admin access to the Odoo.sh project, so it should be run by the client or their partner, with the auditor observing.
+
+Change `--since` to the start of the period under review.
+
+### Option 1: download, verify and run (recommended for audit evidence)
 
 ```bash
+cd ~ && curl -fsSLO https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py
+sha256sum odoo_sh_audit_collector.py
 python3 odoo_sh_audit_collector.py --since 2026-01-01
 ```
 
-The evidence package is written to `~/odoo_audit_evidence/evidence_<timestamp>.zip`, with a `.sha256` file alongside it. Download it from the Odoo.sh editor or with `scp`, then delete it from the server.
+The `sha256sum` output must be:
+
+```
+20d7a55afaf277c9b03ade21b48458de92c47b65e9470a6960db835dc09a2a30
+```
+
+The run also records the script's hash in `environment.json`, so the evidence package shows exactly which version produced it.
+
+### Option 2: run directly from GitHub, nothing saved
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py | python3 - --since 2026-01-01
+```
+
+### Option 3: no curl available
+
+```bash
+python3 -c "import urllib.request as u; exec(compile(u.urlopen('https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py').read(), 'odoo_sh_audit_collector.py', 'exec'))" --since 2026-01-01
+```
+
+With options 2 and 3 the script hash is recorded as `n/a (run from stdin)`. Use option 1 when the hash matters.
+
+### Collect the results
+
+The evidence package is written to `~/odoo_audit_evidence/evidence_<timestamp>.zip`, with a `.sha256` file alongside it.
+
+```bash
+ls -lh ~/odoo_audit_evidence/
+```
+
+Download the zip from the Odoo.sh **Editor** tab (right-click the file → Download) or with `scp`. Then remove everything from the server:
+
+```bash
+rm -rf ~/odoo_audit_evidence ~/odoo_sh_audit_collector.py
+```
+
+The URLs above are pinned to release `v1.0.1`, so the code that runs can't change unless the tag in the URL changes.
 
 ### Options
 
