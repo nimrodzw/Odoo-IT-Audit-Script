@@ -1,0 +1,7 @@
+odoo_audit_evidence/
+evidence_*/
+evidence_*.zip
+*.zip.sha256
+__pycache__/
+*.pyc
+.collector.lock
