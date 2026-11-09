@@ -43,7 +43,7 @@ Change `--since` to the start of the period under review.
 ### Option 1: download, verify and run (recommended for audit evidence)
 
 ```bash
-cd ~ && curl -fsSLO https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py
+cd ~ && curl -fsSLO https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/2c31d9e842b8269565bcd4c7cf79cf07390b1bd1/odoo_sh_audit_collector.py
 sha256sum odoo_sh_audit_collector.py
 python3 odoo_sh_audit_collector.py --since 2026-01-01
 ```
@@ -59,13 +59,13 @@ The run also records the script's hash in `environment.json`, so the evidence pa
 ### Option 2: run directly from GitHub, nothing saved
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py | python3 - --since 2026-01-01
+curl -fsSL https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/2c31d9e842b8269565bcd4c7cf79cf07390b1bd1/odoo_sh_audit_collector.py | python3 - --since 2026-01-01
 ```
 
 ### Option 3: no curl available
 
 ```bash
-python3 -c "import urllib.request as u; exec(compile(u.urlopen('https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/v1.0.1/odoo_sh_audit_collector.py').read(), 'odoo_sh_audit_collector.py', 'exec'))" --since 2026-01-01
+python3 -c "import urllib.request as u; exec(compile(u.urlopen('https://raw.githubusercontent.com/nimrodzw/Odoo-IT-Audit-Script/2c31d9e842b8269565bcd4c7cf79cf07390b1bd1/odoo_sh_audit_collector.py').read(), 'odoo_sh_audit_collector.py', 'exec'))" --since 2026-01-01
 ```
 
 With options 2 and 3 the script hash is recorded as `n/a (run from stdin)`. Use option 1 when the hash matters.
@@ -84,7 +84,7 @@ Download the zip from the Odoo.sh **Editor** tab (right-click the file → Downl
 rm -rf ~/odoo_audit_evidence ~/odoo_sh_audit_collector.py
 ```
 
-The URLs above are pinned to release `v1.0.1`, so the code that runs can't change unless the tag in the URL changes.
+The URLs above are pinned to the exact commit of v1.0.1 (`2c31d9e`), so the code that runs can't change unless the URL changes.
 
 ### Options
 
