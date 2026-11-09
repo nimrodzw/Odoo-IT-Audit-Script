@@ -38,7 +38,7 @@ import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 SECRET_KEY_RE = re.compile(
     r"(pass(word|wd)?|secret|token|api_?key|private|credential|enterprise_code|signature|_key$|^key$|dsn)", re.I)
 URL_CRED_RE = re.compile(r"(https?://)([^/@\s]+)@")
@@ -232,13 +232,20 @@ def find_config(run):
     return None
 
 
+def self_hash():
+    path = globals().get("__file__")
+    if path and os.path.isfile(path):
+        return sha256(path)
+    return "n/a (run from stdin)"
+
+
 def collect_environment(run):
     keep = re.compile(r"^(ODOO|PG|GIT|HOSTNAME|HOME|USER|PATH|LANG|TZ|PYTHON|VIRTUAL_ENV)", re.I)
     env = {k: redact_value(k, v) for k, v in sorted(os.environ.items()) if keep.search(k)}
     du = shutil.disk_usage(str(run.home))
     info = {
         "collector_version": VERSION,
-        "collector_sha256": sha256(__file__),
+        "collector_sha256": self_hash(),
         "run_started": run.started.isoformat(),
         "run_by_os_user": getpass.getuser(),
         "hostname": socket.gethostname(),
